@@ -1,3 +1,5 @@
 .idea
 env
 *.pyc
+djangorest/db.sqlite3
+djangorest/api/migrations
