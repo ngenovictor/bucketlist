@@ -3,6 +3,7 @@ from .models import BucketList
 from rest_framework import status
 from rest_framework.test import APIClient
 from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User
 
 
 class ModelTestCase(TestCase):
@@ -13,8 +14,10 @@ class ModelTestCase(TestCase):
         """
         define test client and other variables
         """
+        user = User.objects.create(username="victor")
         self.bucketlist_name = "Write world class code"
-        self.bucketlist = BucketList(name = self.bucketlist_name)
+        self.bucketlist = BucketList(name=self.bucketlist_name, owner=user)
+
     def test_model_can_create_a_bucket_list(self):
         """
         Test that the bucketlist model can create a bucketlist
@@ -33,8 +36,13 @@ class ViewTestCase(TestCase):
         """
         define test client and other variables
         """
+        user = User.objects.create(username="victor")
+
+        # Initialize client and force it to use authentication
         self.client = APIClient()
-        self.bucketlist_data = {"name":"Go to Ibiza"}
+        self.client.force_authenticate(user=user)
+
+        self.bucketlist_data = {"name": "Go to Ibiza", "owner": user.id}
         self.response = self.client.post(
             reverse("create"),
             self.bucketlist_data,
