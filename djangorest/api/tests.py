@@ -1,5 +1,8 @@
 from django.test import TestCase
 from .models import BucketList
+from rest_framework import status
+from rest_framework.test import APIClient
+from django.core.urlresolvers import reverse
 
 
 class ModelTestCase(TestCase):
@@ -20,3 +23,26 @@ class ModelTestCase(TestCase):
         self.bucketlist.save()
         new_count = BucketList.objects.count()
         self.assertNotEqual(old_count,new_count, "New count and Old count should not be equal")
+
+
+class ViewTestCase(TestCase):
+    """
+    Test suite for the api views
+    """
+    def setUp(self):
+        """
+        define test client and other variables
+        """
+        self.client = APIClient()
+        self.bucketlis_data = {"name":"Go to Ibiza"}
+        self.response = self.client.post(
+            reverse("create"),
+            self.bucketlis_data,
+            format="json"
+        )
+
+    def test_api_can_create_a_bucketlist(self):
+        """
+        test the api has bucketlist creation ability
+        """
+        self.assertEqual(self.response.status_code, status.HTTP_201_CREATED)
