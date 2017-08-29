@@ -1,5 +1,5 @@
 ## Bucket List App
-This is Djago App that creates bucket lists of stuff that we would like to do in the future.
+This is Django App that creates bucket lists of stuff that we would like to do in the future.
 
 **Specs**
 1. App can create a bucketlist
