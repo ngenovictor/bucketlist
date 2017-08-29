@@ -26,6 +26,8 @@ $ python3 manage.py runserver
 ```
 > open [http://localhost:8000/bucketlists/](http://localhost:8000/bucketlists/)
 
+See the [Api Endpoints Documentation](Documentation.md)
+
 **Licence and copyright**
 Ngeno Victor, Moringa School
 Licensed under [MIT Licence](license)
