@@ -14,4 +14,12 @@ class CreateView(generics.ListCreateAPIView):
         """
         save the post data when creating a new bucketlist
         """
-        serializer.save() 
+        serializer.save()
+
+
+class DetailsView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Defines the update and delete behaviour api of our api
+    """
+    queryset = BucketList.objects.all()
+    serializer_class = BucketListSerializer

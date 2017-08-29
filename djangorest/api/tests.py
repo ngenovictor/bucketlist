@@ -34,10 +34,10 @@ class ViewTestCase(TestCase):
         define test client and other variables
         """
         self.client = APIClient()
-        self.bucketlis_data = {"name":"Go to Ibiza"}
+        self.bucketlist_data = {"name":"Go to Ibiza"}
         self.response = self.client.post(
             reverse("create"),
-            self.bucketlis_data,
+            self.bucketlist_data,
             format="json"
         )
 
@@ -46,3 +46,40 @@ class ViewTestCase(TestCase):
         test the api has bucketlist creation ability
         """
         self.assertEqual(self.response.status_code, status.HTTP_201_CREATED)
+
+    def test_api_can_get_a_bucketlist(self):
+        """
+        Test that the api can retrieve a particular bucketlist
+        """
+        bucketlist = BucketList.objects.get()
+        response = self.client.get(
+            reverse("details", kwargs = {"pk": bucketlist.id}),
+            format="json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertContains(response, bucketlist)
+
+    def test_api_can_update_a_bucketlist(self):
+        """
+        Test the api can update the details of a bucketlist
+        """
+        bucketlist = BucketList.objects.get()
+        change_bucketlist = {"name": "Be a universe class developer"}
+        response = self.client.put(
+            reverse("details", kwargs={"pk": bucketlist.id}),
+            change_bucketlist,
+            format="json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_api_can_delete_a_bucketlist(self):
+        """
+        test the api can delete a particular bucketlist
+        """
+        bucketlist = BucketList.objects.get()
+        response = self.client.delete(
+            reverse("details", kwargs={"pk": bucketlist.id}),
+            format="json",
+            follow=True
+        )
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
